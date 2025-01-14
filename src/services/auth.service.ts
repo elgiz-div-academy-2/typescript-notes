@@ -8,7 +8,10 @@ import { UnauthorizedError } from "../utils/error.util";
 const signIn = async (params: SignInParams) => {
   let userRepo = dataSource.getRepository(User);
 
-  let user = await userRepo.findOne({ where: { username: params.username } });
+  let user = await userRepo.findOne({
+    where: { username: params.username },
+    select: { id: true, password: true, username: true },
+  });
 
   if (!user) throw new UnauthorizedError("User or password is wrong");
 
